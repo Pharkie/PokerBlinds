@@ -71,7 +71,10 @@ class LCD_1inch28(framebuf.FrameBuffer):
         self.cs(1)
         self.dc(1)
         self.cs(0)
-        self.spi.write(bytearray([buf]))
+        if isinstance(buf, int):
+            self.spi.write(bytearray([buf]))
+        else:
+            self.spi.write(bytearray(buf))
         self.cs(1)
 
     def set_bl_pwm(self, duty):  # Set screen brightness
@@ -599,8 +602,8 @@ class QMI8658(object):
         # QMI8658GyrRange_512dps
         gyro_lsb_div = 64
         for i in range(3):
-            xyz[i] = raw_xyz[i] / acc_lsb_div  # (acc_lsb_div/1000.0)
-            xyz[i + 3] = raw_xyz[i + 3] * 1.0 / gyro_lsb_div
+            xyz[i] = raw_xyz[i] / acc_lsb_div
+            xyz[i + 3] = raw_xyz[i + 3] / gyro_lsb_div
         return xyz
 
 
