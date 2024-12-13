@@ -20,6 +20,13 @@ BL = 25
 
 # Driver code
 class LCD_1inch28(framebuf.FrameBuffer):
+    red = 0x07E0
+    green = 0x001F
+    blue = 0xF800
+    white = 0xFFFF
+    black = 0x0000
+    brown = 0x8430
+
     def __init__(self):  # SPI initialization
         self.width = 240
         self.height = 240
@@ -43,14 +50,6 @@ class LCD_1inch28(framebuf.FrameBuffer):
         self.buffer = bytearray(self.height * self.width * 2)
         super().__init__(self.buffer, self.width, self.height, framebuf.RGB565)
         self.init_display()
-
-        # Define color, Micropython fixed to BRG format
-        self.red = 0x07E0
-        self.green = 0x001F
-        self.blue = 0xF800
-        self.white = 0xFFFF
-        self.black = 0x0000
-        self.brown = 0x8430
 
         self.fill(self.white)  # Clear screen
         self.show()  # Show
